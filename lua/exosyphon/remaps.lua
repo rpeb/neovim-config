@@ -45,6 +45,13 @@ vim.keymap.set("n", "<leader>w", "<cmd>bp|bd #<CR>", { desc = "Close Buffer; Ret
 -- Navigate between quickfix items
 vim.keymap.set("n", "<leader>h", "<cmd>cnext<CR>zz", { desc = "Forward qfixlist" })
 vim.keymap.set("n", "<leader>;", "<cmd>cprev<CR>zz", { desc = "Backward qfixlist" })
+vim.keymap.set("n", "<leader>qc", function()
+  if vim.fn.empty(vim.fn.filter(vim.fn.getwininfo(), 'v:val.quickfix')) == 1 then
+    vim.cmd("copen")
+  else
+    vim.cmd("cclose")
+  end
+end, { desc = "Toggle Quickfix List" })
 
 -- Navigate between location list items
 vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz", { desc = "Forward location list" })
@@ -83,6 +90,8 @@ vim.keymap.set("n", "<leader>B", "<cmd>lua require'dap'.set_breakpoint(vim.fn.in
   { desc = "Toggle Breakpoint Condition" })
 vim.keymap.set("n", "<leader>E", "<cmd>lua require'dap'.set_exception_breakpoints()<CR>",
   { desc = "Toggle Exception Breakpoint" })
+vim.keymap.set("n", "<leader>et", "<cmd>Neotree toggle<CR>", { desc = "Toggle Neo-tree" })
+vim.keymap.set("n", "<leader>eb", "<cmd>Neotree buffers reveal float<CR>", { desc = "Open Neo-tree Buffers" })
 vim.keymap.set("n", "<leader>dr",
   "<cmd>lua require'dapui'.float_element('repl', { width = 100, height = 40, enter = true })<CR>",
   { desc = "Show DAP REPL" })
@@ -169,3 +178,41 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   pattern  = "*",
   callback = function() vim.highlight.on_yank { timeout = 200 } end
 })
+
+vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
+  pattern = "*",
+  command = "silent! write",
+})
+
+local opts = { noremap = true, silent = true }
+
+-- Java: Run Main Method
+vim.keymap.set("n", "<leader>jm", "<Cmd>lua require'jdtls'.test_class()<CR>", opts)
+
+-- Java: Run Test Method
+vim.keymap.set("n", "<leader>jt", "<Cmd>lua require'jdtls'.test_nearest_method()<CR>", opts)
+
+-- Java: Implement Interface Methods
+vim.keymap.set("n", "<leader>ji", "<Cmd>lua vim.lsp.buf.code_action({ context = { only = { 'source.generate.implementations' } }, apply = true })<CR>", opts)
+
+-- Java: Generate Getters and Setters
+vim.keymap.set("n", "<leader>jg", "<Cmd>lua vim.lsp.buf.code_action({ context = { only = { 'source.generate.accessors' } }, apply = true })<CR>", opts)
+
+-- Java: Extract Variable
+vim.keymap.set("v", "<leader>jv", "<Cmd>lua vim.lsp.buf.code_action({ context = { only = { 'refactor.extract.variable' } }, apply = true })<CR>", opts)
+
+-- Java: Extract Method
+vim.keymap.set("v", "<leader>jx", "<Cmd>lua vim.lsp.buf.code_action({ context = { only = { 'refactor.extract.method' } }, apply = true })<CR>", opts)
+
+-- Java: Rename Variable
+vim.keymap.set("n", "<leader>jr", "<Cmd>lua vim.lsp.buf.rename()<CR>", opts)
+
+-- Java: Debug Main Class
+vim.keymap.set("n", "<leader>jd", "<Cmd>lua require'jdtls'.compile('incremental')<CR>", opts)
+
+-- Java: Maven Clean Install
+vim.keymap.set("n", "<leader>mc", "<Cmd>!mvn clean install<CR>", opts)
+
+-- Java: Format Code
+vim.keymap.set("n", "<leader>jf", "<Cmd>lua vim.lsp.buf.format()<CR>", opts)
+

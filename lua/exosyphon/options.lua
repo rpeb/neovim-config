@@ -14,7 +14,9 @@ vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.opt.smartcase = true
 
-vim.opt.wrap = false
+vim.opt.wrap = true
+vim.opt.linebreak = true
+vim.opt.showbreak = "↪"
 
 vim.opt.swapfile = false
 vim.opt.backup = false

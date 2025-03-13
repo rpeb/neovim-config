@@ -48,8 +48,6 @@ return {
     },
     config = true,
   },
-  --{ "mfussenegger/nvim-jdtls" },
-
   {
       'nvim-java/nvim-java',
       dependencies = {
@@ -480,6 +478,13 @@ return {
   },
   {
     "catppuccin/nvim",
+    opts = {
+          transparent = true,
+          styles = {
+            sidebars = "transparent",
+            floats = "transparent",
+          },
+        },
   },
   {
     "ellisonleao/gruvbox.nvim",
@@ -767,7 +772,7 @@ return {
 
       mason_tool_installer.setup({
         ensure_installed = {
-          "standardrb",
+          --"standardrb",
           "prettier",
           "prettierd",
           "ktlint",
