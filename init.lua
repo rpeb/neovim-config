@@ -23,6 +23,7 @@ require("lazy").setup("plugins", {
 require('exosyphon.globals')
 require('exosyphon.remaps')
 require('exosyphon.options')
+require('workflows')
 vim.cmd("colorscheme tokyonight")
 vim.cmd('hi IlluminatedWordText guibg=none gui=underline')
 vim.cmd('hi IlluminatedWordRead guibg=none gui=underline')
