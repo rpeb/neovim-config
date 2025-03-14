@@ -1,5 +1,6 @@
 return {
   "epwalsh/obsidian.nvim",
+  --dir = "/Users/prakashdubey/Projects/github/obsidian.nvim",
   version = "*",
   lazy = true,
   ft = "markdown",
@@ -11,32 +12,21 @@ return {
       workspaces = {
         {
           name = "ObsidianVault",
-          path = "/Users/andrew/Documents/ObsidianVault",
+          path = "/Users/prakashdubey/Library/Mobile Documents/iCloud~md~obsidian/Documents/Vault1",
         },
       },
       completion = {
         nvim_cmp = true,
         min_chars = 2,
       },
+      notes_subdir="inbox",
       new_notes_location = "notes_subdir",
       note_id_func = function(title)
         return title
       end,
-      note_frontmatter_func = function(note)
-        local out = { id = note.id, aliases = note.aliases, tags = note.tags }
-
-        if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
-          for k, v in pairs(note.metadata) do
-            out[k] = v
-          end
-        end
-
-        return out
-      end,
       mappings = {},
-
       templates = {
-        subdir = "Templates",
+        subdir = "templates",
         date_format = "%Y-%m-%d",
         time_format = "%H:%M",
         tags = "",
@@ -49,10 +39,11 @@ return {
           end,
         },
       },
-
+      log_level = vim.log.levels.DEBUG,
       ui = {
         enable = false, -- using render-markdown.nvim instead
       },
+      disable_frontmatter = true
     })
   end,
 }
