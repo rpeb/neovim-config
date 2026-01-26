@@ -1,0 +1,57 @@
+space + f + b => all buffers
+space + f + k => find keymaps
+space + f + s => find symbols
+space + f + c => grep all files
+space + f + b => all buffers
+space + f + h => find help on plugins
+space + vca => code action (override method etc.)
+space + vcr => refactor name
+space + q + c => close quickfix
+space + g + c => comment linewise
+space + f + t => floating terminal
+g- => undo list
+g+ => redo list
+]d => prev diagnostic (todo, warning, error lines)
+[d => next diagnostic
+space + e + t => toggle tree
+space + e + b => all open files/buffers
+space + e + c => collapse tree
+:vsplit => vertical split
+
+For **searching across the entire project**, use:
+
+**`<leader>fg`** - Live Grep (searches all file contents in the project)
+
+This opens Telescope's live grep, where you can:
+- Type your search term
+- See results in real-time
+- Preview files with matches
+- Press `Enter` to jump to a result
+- Use `<C-w>` to add multiple results to quickfix list
+
+**Other related project-wide searches:**
+- `<leader>fc` - Live Grep excluding test files
+- `<leader>ff` - Find Files (search by filename)
+- `<leader>fw` - Search for word under cursor
+
+Would you like me to add a keymap or update your keymaps file?
+
+## JAVA
+
+`<leader>jj`
+It compiles the current file with javac.
+Runs it with java <ClassName>
+
+To run your Java program
+Press `<leader>jmr` - This will build and run your program in a terminal split
+Other useful keymaps:
+
+`<leader>jmb` - Build only
+`<leader>jmt` - Run tests
+`<leader>jmi` - Full install build
+`<leader>jsh` - Open interactive shell
+
+Standard Neovim Jump Motions
+
+    <C-o>: Jump to the previous (older) location in the jump list.
+    <C-i>: Jump to the next (newer) location in the jump list. 
