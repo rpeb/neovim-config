@@ -1,5 +1,120 @@
 # Neovim Config
 
+## Table of Contents
+
+- [General](#general)
+- [Vim Navigation (Advanced)](#vim-navigation-advanced)
+- [Navigation](#navigation)
+- [Moving Blocks (Visual)](#moving-blocks-visual)
+- [Copy / Delete](#copy--delete)
+- [File Navigation (Oil)](#file-navigation-oil)
+- [Neo-tree](#neo-tree)
+- [Telescope](#telescope)
+- [LSP](#lsp)
+- [Git (Gitsigns)](#git-gitsigns)
+- [Git (Diffview)](#git-diffview)
+- [Git (Octo)](#git-octo)
+- [Quickfix / Location List](#quickfix--location-list)
+- [Trouble](#trouble)
+- [Search / Replace](#search--replace)
+- [Obsidian](#obsidian)
+- [Java](#java)
+- [HTTP Client (Kulala)](#http-client-kulala)
+- [Overseer (Task Runner)](#overseer-task-runner)
+- [Other Plugins](#other-plugins)
+- [Terminal](#terminal)
+- [Vim Defaults](#vim-defaults)
+
+## Vim Navigation (Advanced)
+
+These are built-in vim motions and text objects — no plugins needed. Learn these and you'll fly through code.
+
+### Motions (combine with operators like `d`, `c`, `y`)
+
+| Key | Action |
+|-----|--------|
+| `w` / `W` | Jump to start of next word/WORD |
+| `e` / `E` | Jump to end of word/WORD |
+| `b` / `B` | Jump to start of previous word/WORD |
+| `0` | Start of line |
+| `^` | First non-blank character |
+| `$` | End of line |
+| `gg` / `G` | Top / bottom of file |
+| `5G` / `:15` | Go to line 15 |
+| `%` | Jump to matching bracket |
+| `{` / `}` | Jump to previous/next blank line (paragraph) |
+| `(` / `)` | Jump to previous/next sentence |
+| `H` / `M` / `L` | Top / middle / bottom of screen |
+| `<C-o>` / `<C-i>` | Jump list backward / forward |
+| `;` / `,` | Repeat last `f`/`t` forward/backward |
+
+### Text Objects (combine with `d`, `c`, `y`, `v`)
+
+| Key | Selects |
+|-----|---------|
+| `iw` / `aw` | Inner word / a word (with surrounding space) |
+| `i"` / `a"` | Inside quotes / around quotes |
+| `i(` / `a(` | Inside parens / around parens |
+| `i{` / `a{` | Inside braces / around braces |
+| `i[` / `a[` | Inside brackets / around brackets |
+| `i<` / `a<` | Inside angle brackets / around them |
+| `it` / `at` | Inside HTML tag / around HTML tag |
+| `iW` / `aW` | Inner WORD / a WORD |
+
+### Operators (combine with motions/text objects)
+
+| Key | Action |
+|-----|--------|
+| `d{motion}` | Delete (e.g. `diw` delete inner word, `d$` delete to end) |
+| `c{motion}` | Change (delete and enter insert mode) |
+| `y{motion}` | Yank |
+| `v{motion}` | Visual select |
+| `V` | Visual line select |
+| `<C-v>` | Visual block select |
+| `>` / `<` | Indent / dedent (combine with motion: `>ip` indent paragraph) |
+| `=` | Auto-indent (combine with motion: `=ip` indent paragraph) |
+| `gu` / `gU` | Lowercase / uppercase (e.g. `guw` lowercase word) |
+| `gq` | Format text to textwidth (e.g. `gqap` format paragraph) |
+
+### Useful Combos
+
+| Combo | Action |
+|-------|--------|
+| `ciw` | Change inner word |
+| `ci"` | Change inside quotes |
+| `da(` | Delete around parentheses |
+| `yiw` | Yank inner word |
+| `dip` | Delete inner paragraph |
+| `>ip` | Indent paragraph |
+| `=ip` | Re-indent paragraph |
+| `gUiw` | Uppercase inner word |
+| `gqap` | Reformat paragraph |
+| `cib` | Change inside block |
+| `dit` | Delete inside HTML tag |
+| `yip` | Yank inner paragraph |
+| `Vp` | Replace line with yanked text |
+| `*` / `#` | Search word under cursor forward/backward |
+| `gd` | Go to local definition |
+| `gD` | Go to global definition |
+| `<C-a>` / `<C-x>` | Increment / decrement number |
+| `mi` / `mI` | Set mark i / jump to mark i |
+| `J` (visual) | Join selected lines |
+| `U` (visual) | Lowercase |
+
+### Window / Tab Motions
+
+| Key | Action |
+|-----|--------|
+| `<C-w>w` | Switch to next window |
+| `<C-w>h/j/k/l` | Switch to window in direction |
+| `<C-w>v` | Vertical split |
+| `<C-w>s` | Horizontal split |
+| `<C-w>q` | Close window |
+| `<C-w>o` | Close all other windows |
+| `<C-w>=` | Equalize window sizes |
+| `gt` / `gT` | Next / previous tab |
+| `{count}gt` | Go to tab number |
+
 ## General
 
 | Key | Mode | Action |
