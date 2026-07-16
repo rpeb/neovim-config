@@ -1,6 +1,7 @@
 return {
   "VonHeikemen/lsp-zero.nvim",
   branch = "v2.x",
+  enabled = false,
   dependencies = {
     -- LSP Support
     { "neovim/nvim-lspconfig" }, -- Required
@@ -118,8 +119,8 @@ return {
         ["<C-Space>"] = cmp.mapping.complete(),
         ["<C-f>"] = cmp_action.luasnip_jump_forward(),
         ["<C-b>"] = cmp_action.luasnip_jump_backward(),
-        ["<Tab>"] = cmp_action.luasnip_supertab(),
-        ["<S-Tab>"] = cmp_action.luasnip_shift_supertab(),
+        ["<Tab>"] = cmp.mapping.select_next_item(cmp_select),
+        ["<S-Tab>"] = cmp.mapping.select_prev_item(cmp_select),
       }),
     })
   end,

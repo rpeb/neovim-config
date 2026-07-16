@@ -65,46 +65,11 @@ vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true, desc = "Make current file executable" })
 
 -- Jump to plugin management file
-vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/.config/nvim/lua/plugins.lua<CR>", { desc = "Jump to configuration file" })
+vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/.config/nvim/init.lua<CR>", { desc = "Jump to configuration file" })
 
--- Run Tests
-vim.keymap.set("n", "<leader>t", "<cmd>lua require('neotest').run.run()<CR>", { desc = "Run Test" })
-vim.keymap.set("n", "<leader>tf", "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<CR>",
-  { desc = "Run Test File" })
-vim.keymap.set("n", "<leader>td", "<cmd>lua require('neotest').run.run(vim.fn.getcwd())<CR>",
-  { desc = "Run Current Test Directory" })
-vim.keymap.set("n", "<leader>tp", "<cmd>lua require('neotest').output_panel.toggle()<CR>",
-  { desc = "Toggle Test Output Panel" })
-vim.keymap.set("n", "<leader>tl", "<cmd>lua require('neotest').run.run_last()<CR>", { desc = "Run Last Test" })
-vim.keymap.set("n", "<leader>ts", "<cmd>lua require('neotest').summary.toggle()<CR>", { desc = "Toggle Test Summary" })
-
--- Debug Tests
-vim.keymap.set("n", "<leader>dt", "<cmd>DapContinue<CR>", { desc = "Start Debugging" })
-vim.keymap.set("n", "<leader>dc", "<cmd>DapContinue<CR>", { desc = "Start Debugging" })
-vim.keymap.set("n", "<leader>dso", "<cmd>DapStepOver<CR>", { desc = "Step Over" })
-vim.keymap.set("n", "<leader>dsi", "<cmd>DapStepInto<CR>", { desc = "Step Into" })
-vim.keymap.set("n", "<leader>dsu", "<cmd>DapStepOut<CR>", { desc = "Step Out" })
-vim.keymap.set("n", "<leader>dst", "<cmd>DapStepTerminate<CR>", { desc = "Stop Debugger" })
-vim.keymap.set("n", "<leader>b", "<cmd>lua require'dap'.toggle_breakpoint()<CR>", { desc = "Toggle Breakpoint" })
-vim.keymap.set("n", "<leader>B", "<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
-  { desc = "Toggle Breakpoint Condition" })
-vim.keymap.set("n", "<leader>E", "<cmd>lua require'dap'.set_exception_breakpoints()<CR>",
-  { desc = "Toggle Exception Breakpoint" })
+-- Neo-tree
 vim.keymap.set("n", "<leader>et", "<cmd>Neotree toggle<CR>", { desc = "Toggle Neo-tree" })
 vim.keymap.set("n", "<leader>eb", "<cmd>Neotree buffers reveal float<CR>", { desc = "Open Neo-tree Buffers" })
-vim.keymap.set("n", "<leader>dr",
-  "<cmd>lua require'dapui'.float_element('repl', { width = 100, height = 40, enter = true })<CR>",
-  { desc = "Show DAP REPL" })
-vim.keymap.set("n", "<leader>ds",
-  "<cmd>lua require'dapui'.float_element('scopes', { width = 150, height = 50, enter = true })<CR>",
-  { desc = "Show DAP Scopes" })
-vim.keymap.set("n", "<leader>df",
-  "<cmd>lua require'dapui'.float_element('stacks', { width = 150, height = 50, enter = true })<CR>",
-  { desc = "Show DAP Stacks" })
-vim.keymap.set("n", "<leader>db", "<cmd>lua require'dapui'.float_element('breakpoints', { enter = true })<CR>",
-  { desc = "Show DAP breakpoints" })
-vim.keymap.set("n", "<leader>do", "<cmd>lua require'dapui'.toggle()<CR>", { desc = "Toggle DAP UI" })
-vim.keymap.set("n", "<leader>dl", "<cmd>lua require'dap'.run_last()<CR>", { desc = "Debug Last Test" })
 
 -- Copy file paths
 vim.keymap.set("n", "<leader>cf", "<cmd>let @+ = expand(\"%\")<CR>", { desc = "Copy File Name" })
@@ -129,24 +94,33 @@ vim.keymap.set("n", "<C-Right>", ":vertical resize +2<CR>", { desc = "Resize Ver
 -- Obsidian
 vim.keymap.set("n", "<leader>oc", "<cmd>lua require('obsidian').util.toggle_checkbox()<CR>", { desc = "Obsidian Check Checkbox" })
 vim.keymap.set("n", "<leader>ot", "<cmd>Obsidian new_from_template<CR>", { desc = "Insert Obsidian Template" })
-vim.keymap.set("n", "<leader>ob", "<cmd>Obsidian backlinks<CR>", { desc = "Show ObsidianBacklinks" })
-vim.keymap.set("n", "<leader>ol", "<cmd>Obsidian links<CR>", { desc = "Show ObsidianLinks" })
+vim.keymap.set("n", "<leader>ob", "<cmd>Obsidian backlinks<CR>", { desc = "Show Obsidian Backlinks" })
+vim.keymap.set("n", "<leader>ol", "<cmd>Obsidian links<CR>", { desc = "Show Obsidian Links" })
 vim.keymap.set("n", "<leader>on", "<cmd>Obsidian new<CR>", { desc = "Create New Note" })
 vim.keymap.set("n", "<leader>oq", "<cmd>Obsidian quick_switch<CR>", { desc = "Quick Switch" })
-vim.keymap.set("n", "<leader>of", "<cmd>ObsidianFollowLink<CR>", { desc = "Open referred link" })
+vim.keymap.set("n", "<leader>of", "<cmd>Obsidian follow_link<CR>", { desc = "Open referred link" })
 vim.keymap.set("n", "<leader>od", "<cmd>Obsidian dailies<CR>", { desc = "Daily Notes" })
 vim.keymap.set("n", "<leader>ott", "<cmd>Obsidian tags<CR>", { desc = "tags list" })
 vim.keymap.set("n", "<leader>otoc", "<cmd>Obsidian toc<CR>", { desc = "table of contents" })
 vim.keymap.set("n", "<leader>opi", "<cmd>Obsidian paste_img<CR>", { desc = "paste image" })
-vim.keymap.set("n", "<leader>oo", ":cd /home/prakash/Documents/ubvault<cr>")
---
--- search for files in full vault
-vim.keymap.set("n", "<leader>os", "<cmd>ObsidianSearch<CR>", { desc = "Obsidian Search" })
+-- <leader>oo is defined in lua/custom/plugins/obsidian.lua (cd to active vault)
 
--- for review workflow
--- move file in current buffer to zettelkasten folder
-vim.keymap.set("n", "<leader>ok", ":!mv '%:p' /home/prakash/Documents/ubvault/zettelkasten<cr>:bd<cr>")
-vim.keymap.set("n", "<leader>ow", ":!mv '%:p' /home/prakash/Documents/ubvault/notes/work<cr>:bd<cr>")
+vim.keymap.set("n", "<leader>os", "<cmd>Obsidian search<CR>", { desc = "Obsidian Search" })
+
+-- Review workflow: move current file under ~/Documents/ubvault
+local ubvault = vim.fs.normalize(vim.fn.expand('~/Documents/ubvault'))
+vim.keymap.set('n', '<leader>ok', function()
+  local src = vim.fn.expand('%:p')
+  vim.fn.mkdir(ubvault .. '/zettelkasten', 'p')
+  vim.cmd('silent !mv ' .. vim.fn.shellescape(src) .. ' ' .. vim.fn.shellescape(ubvault .. '/zettelkasten/'))
+  vim.cmd.bd()
+end, { desc = 'Move note to zettelkasten' })
+vim.keymap.set('n', '<leader>ow', function()
+  local src = vim.fn.expand('%:p')
+  vim.fn.mkdir(ubvault .. '/notes/work', 'p')
+  vim.cmd('silent !mv ' .. vim.fn.shellescape(src) .. ' ' .. vim.fn.shellescape(ubvault .. '/notes/work/'))
+  vim.cmd.bd()
+end, { desc = 'Move note to work' })
 -- delete file in current buffer
 vim.keymap.set("n", "<leader>odd", ":!rm '%:p'<cr>:bd<cr>")
 

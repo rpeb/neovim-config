@@ -55,3 +55,15 @@ Standard Neovim Jump Motions
 
     <C-o>: Jump to the previous (older) location in the jump list.
     <C-i>: Jump to the next (newer) location in the jump list. 
+
+Exit from terminal mode: 
+
+ctrl-\ followed by ctrl-n
+
+
+
+
+
+
+
+

@@ -1,1 +1,10 @@
-plugin/*
+tags
+test.sh
+.luarc.json
+nvim
+
+spell/
+
+# Track lazy-lock.json in git for reproducible plugin versions (use :Lazy restore on new machines)
+
+.DS_Store

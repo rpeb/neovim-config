@@ -61,6 +61,7 @@ return {
       },
     })
 
-    vim.keymap.set("n", "<leader>o", "<cmd>Telescope neoclip<CR>", { desc = "Telescope Neoclip" })
+    -- Do not use <leader>o — that prefix is reserved for Obsidian / Overseer (which-key group).
+    vim.keymap.set("n", "<leader>fy", "<cmd>Telescope neoclip<CR>", { desc = "Clipboard history (neoclip)" })
   end,
 }

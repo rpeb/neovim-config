@@ -11,17 +11,17 @@ local M = {}
 --   - command: (optional) custom command name, defaults to "ObsidianNew{Key}"
 M.templates = {
   meeting = {
-    template = "templates/meeting.md",
+    template = "meeting",
     directory = "notes/meetings",
     command = "ObsidianNewMeeting",
   },
   thought = {
-    template = "templates/note.md",
+    template = "note",
     directory = "thoughts",
     command = "ObsidianNewThought",
   },
   post = {
-    template = "templates/note.md",
+    template = "note",
     directory = "posts",
     command = "ObsidianNewPost",
   },
@@ -32,11 +32,11 @@ M.templates = {
 ---@param template_config table The template configuration
 ---@param title string|nil Optional title for the note
 local function create_note_with_template(template_config, title)
-  local obsidian = require("obsidian")
-  local client = obsidian.get_client()
-  
-  if not client then
-    vim.notify("Obsidian client not initialized", vim.log.levels.ERROR)
+  local Note = require("obsidian.note")
+  local Obsidian = require("obsidian").get_client()
+
+  if not Obsidian then
+    vim.notify("Obsidian not initialized", vim.log.levels.ERROR)
     return
   end
 
@@ -49,15 +49,12 @@ local function create_note_with_template(template_config, title)
     end
   end
 
-  -- Create the full path for the note
-  local note_path = template_config.directory .. "/" .. title
-  
-  -- Create a new note using obsidian's API
-  -- The note will be created in the specified directory
-  local note = client:create_note({
-    title = title,
-    dir = client.dir / template_config.directory,
-    no_write = false,
+  -- Create the note using Note.create
+  local note = Note.create({
+    id = title,
+    dir = Obsidian.dir / template_config.directory,
+    should_write = true,
+    template = template_config.template,
   })
 
   if not note then
@@ -67,11 +64,6 @@ local function create_note_with_template(template_config, title)
 
   -- Open the note in a buffer
   vim.cmd("edit " .. tostring(note.path))
-
-  -- Apply the template
-  vim.schedule(function()
-    vim.cmd("ObsidianTemplate " .. template_config.template)
-  end)
 
   vim.notify(
     string.format("Created note '%s' in %s", title, template_config.directory),
