@@ -11,6 +11,9 @@
 - [Neo-tree](#neo-tree)
 - [Telescope](#telescope)
 - [LSP](#lsp)
+- [C/C++ Build (CMake)](#cc-build-cmake)
+- [Java](#java)
+- [Debug (DAP)](#debug-dap)
 - [Git (Gitsigns)](#git-gitsigns)
 - [Git (Diffview)](#git-diffview)
 - [Git (Octo)](#git-octo)
@@ -297,16 +300,50 @@ These are built-in vim motions and text objects — no plugins needed. Learn the
 | `<leader>ow` | Normal | Move to work |
 | `<leader>odd` | Normal | Delete file in buffer |
 
-## Java
+## C/C++ Build (CMake)
 
 | Key | Mode | Action |
 |-----|------|--------|
-| `<leader>jj` | Normal | Compile and run current Java file |
-| `<leader>jmr` | Normal | Build and run in terminal split |
-| `<leader>jmb` | Normal | Build only |
-| `<leader>jmt` | Normal | Run tests |
-| `<leader>jmi` | Normal | Full install build |
-| `<leader>jsh` | Normal | Open interactive shell |
+| `<leader>cc` | Normal | CMake configure |
+| `<leader>cb` | Normal | CMake build |
+| `<leader>cB` | Normal | CMake build (clean) |
+| `<leader>ct` | Normal | CMake run test |
+| `<leader>cR` | Normal | CMake run |
+| `<leader>cS` | Normal | CMake stop |
+| `<leader>cC` | Normal | CMake clean |
+| `<leader>cK` | Normal | CMake select kit |
+| `<leader>cV` | Normal | CMake select build type |
+| `<leader>cA` | Normal | CMake launch args |
+| `<leader>cG` | Normal | CMake open build generator |
+| `<leader>cO` | Normal | CMake close build generator |
+| `<leader>ch` | Normal | CMake header info (Telescope) |
+
+## Debug (DAP)
+
+| Key | Mode | Action |
+|-----|------|--------|
+| `<F5>` | Normal | Start/continue debugging |
+| `<F1>` | Normal | Step into |
+| `<F2>` | Normal | Step over |
+| `<F3>` | Normal | Step out |
+| `<F7>` | Normal | Toggle DAP UI |
+| `<leader>db` | Normal | Toggle breakpoint |
+| `<leader>B` | Normal | Conditional breakpoint |
+| `<leader>E` | Normal | Exception breakpoints |
+| `<leader>dx` | Normal | Terminate debug session |
+| `<leader>dl` | Normal | Run last / REPL |
+| `<leader>dt` | Normal | Debug nearest test (neotest) |
+| `<leader>dr` | Normal | Open REPL float |
+| `<leader>ds` | Normal | Open scopes float |
+| `<leader>df` | Normal | Open stacks float |
+| `<leader>do` | Normal | Toggle DAP UI |
+| `<leader>dh` | Normal | Debug hover |
+| `<leader>dS` | Normal | Debug scopes |
+| `<leader>dF` | Normal | Debug frames |
+| `<leader>di` | Normal | Debug inspect (REPL) |
+| `<leader>de` | Normal | Debug exception breakpoints |
+| `<leader>dR` | Normal | Debug run replay |
+| `<leader>dg` | Normal | Debug switch gdb/lldb |
 
 ## HTTP Client (Kulala)
 
