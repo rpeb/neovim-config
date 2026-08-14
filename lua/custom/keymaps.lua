@@ -52,13 +52,13 @@ vim.keymap.set('n', '<leader>uw', function() vim.wo.wrap = not vim.wo.wrap end, 
 
 -- Copy full file path to clipboard
 vim.keymap.set('n', '<leader>fp', function()
-  local path = vim.fn.expand('%:p')
-  vim.fn.system('wl-copy', path)
+    local path = vim.fn.expand '%:p'
+    vim.fn.system('wl-copy', path)
 end, { desc = 'Copy full [F]ile [P]ath to clipboard' })
 
 -- Open nvim config
 vim.keymap.set('n', '<leader>vn', '<cmd>e $MYVIMRC<CR>', { desc = 'Open init.lua' })
-vim.keymap.set('n', '<leader>vc', function() vim.cmd('e ' .. vim.fn.stdpath('config')) end, { desc = 'Open nvim config dir' })
+vim.keymap.set('n', '<leader>vc', function() vim.cmd('e ' .. vim.fn.stdpath 'config') end, { desc = 'Open nvim config dir' })
 
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
@@ -67,9 +67,7 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 
 -- Kill terminal job
 vim.keymap.set('n', '<leader>jk', function()
-  if vim.bo.buftype == 'terminal' then
-    vim.fn.jobstop(vim.bo.channel)
-  end
+    if vim.bo.buftype == 'terminal' then vim.fn.jobstop(vim.bo.channel) end
 end, { desc = 'Kill terminal job' })
 
 -- Disable arrow keys in normal mode

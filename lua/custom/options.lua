@@ -37,9 +37,15 @@ vim.o.timeoutlen = 300
 vim.o.splitright = true
 vim.o.splitbelow = true
 
--- Show whitespace characters (tab, trail, nbsp)
+-- 4-space indentation by default (ftplugins can override per-filetype)
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
+vim.o.softtabstop = 4
+vim.o.expandtab = true
+
+-- Show whitespace characters (tabs display as a plain space, no markers)
 vim.o.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = { tab = '  ', trail = '·', nbsp = '␣' }
 
 -- Preview substitutions live, as you type!
 vim.o.inccommand = 'split'
@@ -55,12 +61,12 @@ vim.o.confirm = true
 
 -- Diagnostic display
 vim.diagnostic.config {
-  update_in_insert = false,
-  severity_sort = true,
-  float = { border = 'rounded', source = 'if_many' },
-  underline = { severity = vim.diagnostic.severity.ERROR },
+    update_in_insert = false,
+    severity_sort = true,
+    float = { border = 'rounded', source = 'if_many' },
+    underline = { severity = vim.diagnostic.severity.ERROR },
 
-  virtual_text = true, -- inline text at the end of the line
-  virtual_lines = false, -- virtual lines underneath the code
-  jump = { float = true },
+    virtual_text = true, -- inline text at the end of the line
+    virtual_lines = false, -- virtual lines underneath the code
+    jump = { float = true },
 }
