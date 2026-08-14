@@ -63,7 +63,7 @@ end
 -- Build standalone file for debugging (keeps binary)
 function M.build_for_debug()
   local file = vim.api.nvim_buf_get_name(0)
-  if file == '' then return end
+  if file == '' then vim.notify('No file', vim.log.levels.ERROR) return end
 
   local ft = vim.bo.filetype
   local compiler = ft == 'cpp' and 'g++' or 'gcc'

@@ -34,8 +34,15 @@ return {
     require('mason-nvim-dap').setup {
       automatic_installation = true,
       handlers = {},
-      ensure_installed = { 'delve', 'java-debug-adapter', 'java-test' },
+      ensure_installed = { 'delve', 'java-debug-adapter', 'java-test', 'cppdbg' },
     }
+
+    -- Satisfy nvim-dap-ui's internal adapter (prevents "No configuration found" error)
+    dap.adapters.dapui_breakpoints = {
+      type = 'server',
+      port = '${port}',
+    }
+    dap.configurations.dapui_breakpoints = {}
 
     dapui.setup {
       icons = { expanded = '▾', collapsed = '▸', current_frame = '*' },
@@ -61,6 +68,66 @@ return {
     require('dap-go').setup {
       delve = { detached = vim.fn.has 'win32' == 0 },
     }
+
+    -- C/C++ debugging via GDB (cpptools adapter)
+    dap.configurations.c = {
+      {
+        name = 'Launch (GDB)',
+        type = 'cppdbg',
+        request = 'launch',
+        program = function()
+          local file = vim.api.nvim_buf_get_name(0)
+          local dir = vim.fn.fnamemodify(file, ':h')
+          local exe = vim.fn.fnamemodify(file, ':t:r')
+          return vim.fn.input('Path to executable: ', dir .. '/' .. exe, 'file')
+        end,
+        cwd = function() return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':h') end,
+        stopAtBeginningOfMainSubprogram = false,
+        MIMode = 'gdb',
+        gdbpath = 'gdb',
+        setupCommands = {
+          { text = '-enable-pretty-printing', ignoreFailures = true },
+          { text = 'set pagination off', ignoreFailures = true },
+        },
+      },
+      {
+        name = 'Attach (GDB)',
+        type = 'cppdbg',
+        request = 'attach',
+        program = function()
+          local file = vim.api.nvim_buf_get_name(0)
+          local dir = vim.fn.fnamemodify(file, ':h')
+          return vim.fn.input('Path to executable: ', dir .. '/', 'file')
+        end,
+        cwd = function() return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':h') end,
+        MIMode = 'gdb',
+        gdbpath = 'gdb',
+        setupCommands = {
+          { text = '-enable-pretty-printing', ignoreFailures = true },
+          { text = 'set pagination off', ignoreFailures = true },
+        },
+      },
+      {
+        name = 'Launch (GDB, current file)',
+        type = 'cppdbg',
+        request = 'launch',
+        program = function()
+          local file = vim.api.nvim_buf_get_name(0)
+          local dir = vim.fn.fnamemodify(file, ':h')
+          local exe = vim.fn.fnamemodify(file, ':t:r')
+          return dir .. '/' .. exe
+        end,
+        cwd = function() return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':h') end,
+        stopAtBeginningOfMainSubprogram = false,
+        MIMode = 'gdb',
+        gdbpath = 'gdb',
+        setupCommands = {
+          { text = '-enable-pretty-printing', ignoreFailures = true },
+          { text = 'set pagination off', ignoreFailures = true },
+        },
+      },
+    }
+    dap.configurations.cpp = dap.configurations.c
 
     -- Java debugging: use JDTLS as the DAP host
     dap.configurations.java = {

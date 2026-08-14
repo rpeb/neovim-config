@@ -31,7 +31,7 @@ vim.keymap.set('n', '<leader>ch', function()
 end, { desc = '[C] Switch [H]eader/Source', buffer = true })
 
 -- Show diagnostics
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostics under cursor', buffer = true })
+vim.keymap.set('n', '<leader>ed', vim.diagnostic.open_float, { desc = 'Show diagnostics under cursor', buffer = true })
 
 -- Compile single file (quick)
 vim.keymap.set('n', '<leader>cc', function()

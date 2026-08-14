@@ -27,7 +27,7 @@
     <setting id="org.eclipse.jdt.core.formatter.blank_lines_after_imports" value="1" />
     <setting id="org.eclipse.jdt.core.formatter.blank_lines_after_package" value="1" />
     <setting id="org.eclipse.jdt.core.formatter.blank_lines_after_type_declaration" value="1" />
-    <setting id="org.eclipse.jdt.core.formatter.blank_lines_before_field" value="1" />
+    <setting id="org.eclipse.jdt.core.formatter.blank_lines_before_field" value="0" />
     <setting id="org.eclipse.jdt.core.formatter.blank_lines_before_first_class_body_declaration" value="0" />
     <setting id="org.eclipse.jdt.core.formatter.blank_lines_before_member_type" value="1" />
     <setting id="org.eclipse.jdt.core.formatter.blank_lines_before_method" value="1" />
@@ -101,14 +101,14 @@
     <setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_constructor_declaration" value="do not insert" />
     <setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_enum_constant" value="do not insert" />
     <setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_for" value="do not insert" />
-    <setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_if" value="insert" />
+    <setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_if" value="do not insert" />
     <setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_method_declaration" value="do not insert" />
     <setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_method_invocation" value="do not insert" />
     <setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_parenthesized_expression" value="do not insert" />
-    <setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_switch" value="insert" />
+    <setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_switch" value="do not insert" />
     <setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_synchronized" value="insert" />
     <setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_try" value="insert" />
-    <setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_while" value="insert" />
+    <setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_while" value="do not insert" />
     <setting id="org.eclipse.jdt.core.formatter.insert_space_after_question_in_conditional" value="insert" />
     <setting id="org.eclipse.jdt.core.formatter.insert_space_after_question_in_wildcard" value="insert" />
     <setting id="org.eclipse.jdt.core.formatter.insert_space_after_semicolon_in_for" value="insert" />
@@ -208,6 +208,7 @@
     <setting id="org.eclipse.jdt.core.formatter.put_empty_statement_on_new_line" value="true" />
     <setting id="org.eclipse.jdt.core.formatter.tabulation_char" value="space" />
     <setting id="org.eclipse.jdt.core.formatter.tabulation_size" value="4" />
+    <setting id="org.eclipse.jdt.core.formatter.indent_switch_case_labels" value="true" />
     <setting id="org.eclipse.jdt.core.formatter.use_tabs_only_for_leading_indentations" value="false" />
     <setting id="org.eclipse.jdt.core.formatter.use_this_for_non_static_field_access_only_if_qualified" value="false" />
     <setting id="org.eclipse.jdt.core.formatter.use_this_for_non_static_method_access_only_if_qualified" value="false" />

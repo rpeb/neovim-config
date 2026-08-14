@@ -8,7 +8,7 @@
 - [Moving Blocks (Visual)](#moving-blocks-visual)
 - [Copy / Delete](#copy--delete)
 - [File Navigation (Oil)](#file-navigation-oil)
-- [Neo-tree](#neo-tree)
+- [File Navigation (Yazi)](#file-navigation-yazi)
 - [Telescope](#telescope)
 - [LSP](#lsp)
 - [C/C++ Build (CMake)](#cc-build-cmake)
@@ -19,6 +19,8 @@
 - [Git (Octo)](#git-octo)
 - [Quickfix / Location List](#quickfix--location-list)
 - [Trouble](#trouble)
+- [Flash (Jump)](#flash-jump)
+- [Surround (nvim-surround)](#surround-nvim-surround)
 - [Search / Replace](#search--replace)
 - [Obsidian](#obsidian)
 - [Java](#java)
@@ -26,6 +28,7 @@
 - [Overseer (Task Runner)](#overseer-task-runner)
 - [Other Plugins](#other-plugins)
 - [Terminal](#terminal)
+- [Tmux (vim-tpipeline)](#tmux-vim-tpipeline)
 - [Vim Defaults](#vim-defaults)
 
 ## Vim Navigation (Advanced)
@@ -171,13 +174,12 @@ These are built-in vim motions and text objects — no plugins needed. Learn the
 |-----|------|--------|
 | `-` | Normal | Open parent directory (Oil) |
 
-## Neo-tree
+## File Navigation (Yazi)
 
 | Key | Mode | Action |
 |-----|------|--------|
-| `\` | Normal | Reveal file in Neo-tree |
-| `<leader>et` | Normal | Toggle Neo-tree |
-| `<leader>eb` | Normal | Open buffer list (float) |
+| `<leader>e` | Normal | Open Yazi file manager |
+| `<leader>Ye` | Normal | Open Yazi in cwd |
 
 ## Telescope
 
@@ -273,6 +275,23 @@ These are built-in vim motions and text objects — no plugins needed. Learn the
 | `<leader>xQ` | Normal | Quickfix list |
 | `<leader>xs` | Normal | Document symbols |
 | `<leader>xr` | Normal | LSP references |
+
+## Flash (Jump)
+
+| Key | Mode | Action |
+|-----|------|--------|
+| `s` | Normal/Visual/Operator | Flash jump to any position |
+| `S` | Normal/Operator/Visual | Flash jump with treesitter (select groups) |
+| `<C-s>` | Command | Toggle flash search in cmdline |
+
+## Surround (nvim-surround)
+
+| Key | Mode | Action |
+|-----|------|--------|
+| `ys{motion}{char}` | Normal | Add surround (e.g. `ysiw"`, `ysa)'`) |
+| `ds{char}` | Normal | Delete surround (e.g. `ds"`, `ds(`) |
+| `cs{old}{new}` | Normal | Change surround (e.g. `cs"'`, `cs("`) |
+| `S{char}` | Visual | Surround selection |
 
 ## Search / Replace
 
@@ -386,6 +405,10 @@ These are built-in vim motions and text objects — no plugins needed. Learn the
 | `<Esc><Esc>` | Terminal | Exit terminal mode |
 | `<C-t>` | Terminal | Exit terminal mode (alt) |
 | `<leader>jk` | Normal | Kill terminal job |
+
+## Tmux (vim-tpipeline)
+
+Automatically merges Neovim's statusline with tmux's statusline. No keymaps needed — just works.
 
 ## Vim Defaults
 

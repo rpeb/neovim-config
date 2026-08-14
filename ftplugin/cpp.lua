@@ -12,10 +12,28 @@ vim.keymap.set('n', '<leader>cr', function()
   utils.build_and_run()
 end, { desc = '[C++] Compile & Run', buffer = true })
 
--- Compile with debug flags
-vim.keymap.set('n', '<leader>cR', function()
-  utils.build_and_run { debug = true }
-end, { desc = '[C++] Compile & Run (debug)', buffer = true })
+-- Build current file only (no run)
+vim.keymap.set('n', '<leader>cF', function()
+  local file = vim.api.nvim_buf_get_name(0)
+  if file == '' then vim.notify('No file', vim.log.levels.ERROR) return end
+  local dir = vim.fn.fnamemodify(file, ':h')
+  local exe = vim.fn.fnamemodify(file, ':t:r')
+  vim.cmd 'botright 10new'
+  local win = vim.api.nvim_get_current_win()
+  local build_cmd = string.format(
+    [[cd "%s" && output=$(g++ -std=c++20 -Wall -Wextra -O2 "%s" -o "%s" 2>&1); ret=$?; echo "$output"; if [ $ret -ne 0 ]; then exit 1; elif echo "$output" | grep -q "warning:"; then echo "Build OK with warnings"; exit 1; else echo "Build OK: ./%s"; exit 0; fi]],
+    dir, file, exe, exe
+  )
+  vim.fn.termopen({ 'bash', '-c', build_cmd }, {
+    on_exit = function(_, code)
+      vim.schedule(function()
+        if code == 0 and vim.api.nvim_win_is_valid(win) then
+          vim.api.nvim_win_close(win, true)
+        end
+      end)
+    end,
+  })
+end, { desc = '[C++] Build current [F]ile', buffer = true })
 
 -- Compile with arguments
 vim.keymap.set('n', '<leader>cA', function()
@@ -34,7 +52,7 @@ vim.keymap.set('n', '<leader>ch', function()
 end, { desc = '[C++] Switch [H]eader/Source', buffer = true })
 
 -- Show diagnostics
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostics under cursor', buffer = true })
+vim.keymap.set('n', '<leader>ed', vim.diagnostic.open_float, { desc = 'Show diagnostics under cursor', buffer = true })
 
 -- Quick compile with C++20
 vim.keymap.set('n', '<leader>cc', function()

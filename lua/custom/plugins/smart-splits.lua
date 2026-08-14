@@ -6,7 +6,7 @@ return {
     'mrjones2014/smart-splits.nvim',
     event = 'VimEnter',
     opts = {
-      ignored_filetypes = { 'NvimTree', 'neo-tree', 'aerial' },
+      ignored_filetypes = { 'NvimTree', 'aerial' },
     },
     config = function(_, opts)
       local smart_splits = require 'smart-splits'
