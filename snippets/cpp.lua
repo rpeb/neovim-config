@@ -2,6 +2,7 @@ local ls = require 'luasnip'
 local s = ls.snippet
 local t = ls.text_node
 local i = ls.insert_node
+local c = ls.choice_node
 
 ls.add_snippets('cpp', {
   s('dsa_cpp', {
@@ -45,6 +46,10 @@ ls.add_snippets('cpp', {
       '{',
       '    cerr << t;',
       '}',
+      'void _print(long long t)',
+      '{',
+      '    cerr << t;',
+      '}',
       'void _print(double t)',
       '{',
       '    cerr << t;',
@@ -53,7 +58,9 @@ ls.add_snippets('cpp', {
       'template <class T, class V> void _print(pair<T, V> p);',
       'template <class T> void _print(vector<T> v);',
       'template <class T> void _print(set<T> v);',
+      'template <class T> void _print(unordered_set<T> v);',
       'template <class T, class V> void _print(map<T, V> v);',
+      'template <class T, class V> void _print(unordered_map<T, V> v);',
       'template <class T, class V> void _print(pair<T, V> p)',
       '{',
       '    cerr << "{";',
@@ -80,7 +87,25 @@ ls.add_snippets('cpp', {
       '    }',
       '    cerr << "]";',
       '}',
+      'template <class T> void _print(unordered_set<T> v)',
+      '{',
+      '    cerr << "[ ";',
+      '    for (T i : v) {',
+      '        _print(i);',
+      '        cerr << " ";',
+      '    }',
+      '    cerr << "]";',
+      '}',
       'template <class T, class V> void _print(map<T, V> v)',
+      '{',
+      '    cerr << "[ ";',
+      '    for (auto i : v) {',
+      '        _print(i);',
+      '        cerr << " ";',
+      '    }',
+      '    cerr << "]";',
+      '}',
+      'template <class T, class V> void _print(unordered_map<T, V> v)',
       '{',
       '    cerr << "[ ";',
       '    for (auto i : v) {',
@@ -98,7 +123,7 @@ ls.add_snippets('cpp', {
       '        ofstream out("/tmp/_dsa_input_stripped.txt");',
       '        string line;',
       '        while (getline(in, line)) {',
-      '            line.erase(remove(line.begin(), line.end(), \'"\'), line.end());',
+      '            line.erase(remove(line.begin(), line.end(), \'\"\'), line.end());',
       '            out << line << "\\n";',
       '        }',
       '    }',
@@ -123,10 +148,10 @@ ls.add_snippets('cpp', {
       'int32_t main()',
       '{',
       '    fastio fio();',
-      '    int t;',
-      '    cin >> t;',
-      '    while (t--)',
-      '        solve();',
+      '    // int t;',
+      '    // cin >> t;',
+      '    // while (t--)',
+      '    solve();',
       '    return 0;',
       '}',
       '',
@@ -166,5 +191,110 @@ ls.add_snippets('cpp', {
       '    return result;',
       '}',
     },
+  }),
+
+  -- Templates moved from lua/custom/plugins/cp.lua
+
+  -- C++ CP template (classic)
+  s('cp', {
+    t { '#include <bits/stdc++.h>', 'using namespace std;', 'typedef long long ll;', 'typedef pair<int,int> pii;', 'typedef vector<int> vi;', '', 'void solve() {', '    ' },
+    i(1),
+    t { '', '}', '', 'int main() {', '    ios_base::sync_with_stdio(false);', '    cin.tie(NULL);', '', '    int t = 1;' },
+    c(2, { t '', t { '    cin >> t;', '    while (t--)' } }),
+    t { '    while (t--) {', '        solve();', '    }', '', '    return 0;', '}' },
+  }),
+
+  -- C++ CP template (minimal)
+  s('cp2', {
+    t { '#include <bits/stdc++.h>', 'using namespace std;', '', 'void solve() {', '    ' },
+    i(1),
+    t { '', '}', '', 'int main() {', '    int t;' },
+    t { '', '    cin >> t;' },
+    t { '', '    while (t--) solve();' },
+    t { '', '    return 0;', '}' },
+  }),
+
+  -- Graph/BFS template
+  s('graph', {
+    t { 'vector<int> adj[N];', 'bool vis[N];', 'int dist[N];', '', 'void bfs(int src) {' },
+    t { '', '    memset(dist, -1, sizeof(dist));' },
+    t { '', '    queue<int> q;' },
+    t { '', '    dist[src] = 0;' },
+    t { '', '    q.push(src);' },
+    t { '', '    while (!q.empty()) {' },
+    t { '', '        int u = q.front(); q.pop();' },
+    t { '', '        for (int v : adj[u]) {' },
+    t { '', '            if (dist[v] == -1) {' },
+    t { '', '                dist[v] = dist[u] + 1;' },
+    t { '', '                q.push(v);', '            }', '        }', '    }', '}' },
+  }),
+
+  -- DSU template
+  s('dsu', {
+    t { 'struct DSU {', '    vector<int> parent, rank;', '    DSU(int n) : parent(n), rank(n, 0) {' },
+    t { '', '        iota(parent.begin(), parent.end(), 0);', '    }' },
+    t { '', '    int find(int x) {' },
+    t { '', '        if (parent[x] != x) parent[x] = find(parent[x]);' },
+    t { '', '        return parent[x];', '    }' },
+    t { '', '', '    bool unite(int x, int y) {' },
+    t { '', '        x = find(x); y = find(y);' },
+    t { '', '        if (x == y) return false;' },
+    t { '', '        if (rank[x] < rank[y]) swap(x, y);' },
+    t { '', '        parent[y] = x;' },
+    t { '', '        if (rank[x] == rank[y]) rank[x]++;' },
+    t { '', '        return true;', '    }', '};' },
+  }),
+
+  -- Segment tree template
+  s('seg', {
+    t { 'const int N = 2e5 + 5;', 'll tree[4 * N], lazy[4 * N];', '', 'void push(int node, int l, int r) {' },
+    t { '', '    if (lazy[node] != 0) {' },
+    t { '', '        tree[node] += lazy[node];' },
+    t { '', '        if (l != r) { lazy[2*node] += lazy[node]; lazy[2*node+1] += lazy[node]; }' },
+    t { '', '        lazy[node] = 0;', '    }', '}' },
+    t { '', '', 'void build(int node, int l, int r) {' },
+    t { '', '    if (l == r) { tree[node] = 0; return; }' },
+    t { '', '    int mid = (l+r)/2;' },
+    t { '', '    build(2*node, l, mid); build(2*node+1, mid+1, r);' },
+    t { '', '    tree[node] = tree[2*node] + tree[2*node+1];', '}' },
+    t { '', '', 'void update(int node, int l, int r, int ql, int qr, ll val) {' },
+    t { '', '    push(node, l, r); if (qr < l || r < ql) return;' },
+    t { '', '    if (ql <= l && r <= qr) { lazy[node] += val; push(node, l, r); return; }' },
+    t { '', '    int mid = (l+r)/2;' },
+    t { '', '    update(2*node, l, mid, ql, qr, val); update(2*node+1, mid+1, r, ql, qr, val);' },
+    t { '', '    tree[node] = tree[2*node] + tree[2*node+1];', '}' },
+    t { '', '', 'll query(int node, int l, int r, int ql, int qr) {' },
+    t { '', '    push(node, l, r); if (qr < l || r < ql) return 0;' },
+    t { '', '    if (ql <= l && r <= qr) return tree[node];' },
+    t { '', '    int mid = (l+r)/2;' },
+    t { '', '    return query(2*node, l, mid, ql, qr) + query(2*node+1, mid+1, r, ql, qr);', '}' },
+  }),
+
+  -- Modular arithmetic
+  s('mint', {
+    t { 'const int MOD = 1e9 + 7;', '', 'll modpow(ll base, ll exp, ll mod) {' },
+    t { '', '    ll result = 1;' },
+    t { '', '    while (exp > 0) {' },
+    t { '', '        if (exp & 1) result = result * base % mod;' },
+    t { '', '        base = base * base % mod;' },
+    t { '', '        exp >>= 1;', '    }' },
+    t { '', '    return result;', '}' },
+  }),
+
+  -- Read input helper
+  s('bn', {
+    t { 'int n;' },
+    t { '', 'cin >> n;' },
+    t { '', 'vi a(n);' },
+    t { '', 'for (auto &x : a) cin >> x;' },
+  }),
+
+  -- For loop snippet
+  s('fori', {
+    t { 'for (int i = 0; i < ' },
+    i(1, 'n'),
+    t { '; i++) {', '    ' },
+    i(2),
+    t { '', '}' },
   }),
 })
