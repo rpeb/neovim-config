@@ -12,7 +12,6 @@ return {
                 flavour = 'mocha',
                 no_italic = true,
                 integrations = {
-                    blink_cmp = true,
                     gitsigns = true,
                     mason = true,
                     mini = { enabled = true },

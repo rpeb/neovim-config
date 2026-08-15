@@ -1,4 +1,5 @@
--- Merge every `*.lua` sibling into the lazy spec (see `import = 'custom.plugins'` in init.lua).
+-- Merge every `*.lua` sibling into one flat spec list, consumed by the
+-- vim.pack driver in lua/custom/pack.lua (was lazy.nvim's `import`).
 local spec = {}
 local dir = vim.fn.fnamemodify(debug.getinfo(1, 'S').source:sub(2), ':p:h')
 

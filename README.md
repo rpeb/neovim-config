@@ -11,13 +11,13 @@
 - [File Navigation (Yazi)](#file-navigation-yazi)
 - [Telescope](#telescope)
 - [LSP](#lsp)
+- [Autocomplete (Native)](#autocomplete-native)
 - [Formatting (Conform)](#formatting-conform)
 - [C/C++ Build (CMake)](#cc-build-cmake)
 - [Java](#java)
 - [Debug (DAP)](#debug-dap)
 - [Git (Gitsigns)](#git-gitsigns)
 - [Git (Diffview)](#git-diffview)
-- [Git (Octo)](#git-octo)
 - [Quickfix / Location List](#quickfix--location-list)
 - [Trouble](#trouble)
 - [Flash (Jump)](#flash-jump)
@@ -28,6 +28,7 @@
 - [Overseer (Task Runner)](#overseer-task-runner)
 - [Other Plugins](#other-plugins)
 - [Themes (Themery)](#themes-themery)
+- [Plugins (vim.pack)](#plugins-vimpack)
 - [Terminal](#terminal)
 - [Tmux (vim-tpipeline)](#tmux-vim-tpipeline)
 - [Vim Defaults](#vim-defaults)
@@ -220,6 +221,23 @@ These are built-in vim motions and text objects — no plugins needed. Learn the
 | `gW` | Normal | Workspace symbols |
 | `<C-h>` | Insert | LSP signature help |
 
+## Autocomplete (Native)
+
+Uses Neovim 0.12's built-in completion instead of a cmp plugin:
+
+- **Auto-triggered popup menu** as you type (`autocomplete`), sourcing keywords,
+  paths, and LSP (via the omnifunc) per the `complete` option.
+- **LSP completion** is registered per-buffer on attach
+  (`vim.lsp.completion.enable`), which also expands LSP snippet items.
+- **Snippets** come from LuaSnip: your CP templates in `snippets/*.lua` and
+  friendly-snippets.
+
+| Key | Mode | Action |
+|-----|------|--------|
+| `<Tab>` | Insert | Next completion / expand or jump through snippet / tabout of brackets |
+| `<S-Tab>` | Insert | Previous completion / jump back through snippet / tabout back |
+| `<CR>` | Insert | Accept highlighted completion (or insert newline) |
+
 ## Formatting (Conform)
 
 | Key | Mode | Action |
@@ -257,15 +275,6 @@ Format-on-save is enabled. Respects project config files where present:
 | `<leader>gh` | Normal | File history |
 | `<leader>gH` | Normal | Full history |
 | `<leader>gf` | Normal | Focus files panel |
-
-## Git (Octo)
-
-| Key | Mode | Action |
-|-----|------|--------|
-| `<leader>goi` | Normal | GitHub issues |
-| `<leader>gop` | Normal | GitHub PRs |
-| `<leader>god` | Normal | GitHub discussions |
-| `<leader>gon` | Normal | GitHub notifications |
 
 ## Quickfix / Location List
 
@@ -440,6 +449,19 @@ Available themes (variants selectable in the picker):
 - **Sonokai** (default, atlantis, andromeda, shusia, maia, espresso)
 - **Oxocarbon**
 - **Solarized 8** (default, flat, high, low, light)
+
+## Plugins (vim.pack)
+
+Plugins are managed by Neovim 0.12's **built-in plugin manager** (`vim.pack`) —
+no external manager (lazy.nvim) is used. All plugins load at startup; there is
+no lazy loading.
+
+- `:VimPackUpdate` — fetch and review updates (write the confirm buffer to apply)
+- `:VimPackClean` — remove plugins no longer declared in the config
+- `:lua vim.pack.update()` / `:lua vim.pack.del({...})` — lower-level access
+
+Plugin revisions are pinned in `nvim-pack-lock.json` (committed), so a fresh
+clone installs at exactly the same versions.
 
 ## Terminal
 

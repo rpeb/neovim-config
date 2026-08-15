@@ -5,7 +5,8 @@ nvim
 
 spell/
 
-# Track lazy-lock.json in git for reproducible plugin versions (use :Lazy restore on new machines)
+# nvim-pack-lock.json is tracked in git so fresh clones install all plugins
+# at exactly the same revisions (vim.pack reads it on first startup)
 
 .DS_Store
 

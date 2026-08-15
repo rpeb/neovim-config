@@ -44,10 +44,6 @@ return {
     config = function()
         require('obsidian').setup {
             workspaces = workspaces,
-            completion = {
-                nvim_cmp = false, -- Set true if using nvim-cmp; blink.cmp needs blink.compat for Obsidian sources
-                min_chars = 2,
-            },
             notes_subdir = 'inbox',
             new_notes_location = 'notes_subdir',
             daily_notes = {

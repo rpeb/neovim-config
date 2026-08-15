@@ -77,3 +77,15 @@ vim.diagnostic.config {
     virtual_lines = false, -- virtual lines underneath the code
     jump = { float = true },
 }
+
+-- Native autocompletion (Neovim 0.12): auto-triggered completion menu.
+-- Replaces the old blink.cmp setup. The LSP side lives in
+-- lua/custom/plugins/lsp.lua; Tab/S-Tab/Enter handling is in lua/custom/keymaps.lua.
+vim.o.autocomplete = true
+-- Sources: current buffer, other windows, listed buffers, file paths, and the
+-- LSP omnifunc ('o'). Weights cap candidates per source; the decaying timeout
+-- ('autocompletetimeout') keeps typing responsive even with slow sources.
+vim.opt.complete = '.^5,w^5,b^5,u^5,f^5,o^5'
+-- menuone+noselect: show the menu without forcing a selection; 'popup' shows
+-- a preview popup (docs) for the selected item.
+vim.opt.completeopt = 'menu,menuone,noselect,popup'

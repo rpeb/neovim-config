@@ -28,9 +28,6 @@ return {
                     },
                 },
             },
-
-            -- Allows extra capabilities provided by blink.cmp
-            'saghen/blink.cmp',
         },
         config = function()
             -- Configure keymaps/highlights when an LSP attaches to a buffer
@@ -75,6 +72,13 @@ return {
                         })
                     end
 
+                    -- Native LSP completion (Neovim 0.12): register the client for the
+                    -- built-in completion. The LSP omnifunc is set automatically on
+                    -- attach; this also expands LSP snippet items via vim.snippet.
+                    if client and client:supports_method('textDocument/completion', event.buf) then
+                        vim.lsp.completion.enable(true, client.id, event.buf, {})
+                    end
+
                     -- Inlay hints on by default (toggle with <leader>th)
                     if client and client:supports_method('textDocument/inlayHint', event.buf) then
                         vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
@@ -86,9 +90,6 @@ return {
                     end
                 end,
             })
-
-            -- Extend default client capabilities with blink.cmp's
-            local capabilities = require('blink.cmp').get_lsp_capabilities()
 
             -- Enabled language servers
             local servers = {
@@ -148,7 +149,6 @@ return {
             }
 
             for name, server in pairs(servers) do
-                server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
                 vim.lsp.config(name, server)
                 vim.lsp.enable(name)
             end
@@ -169,8 +169,6 @@ return {
                     if client.workspace_folders and client.workspace_folders[1].name == vim.fn.stdpath 'config' then
                         table.insert(library, vim.env.VIMRUNTIME .. '/lua')
                         local plugin_dirs = {
-                            'lazy.nvim',
-                            'blink.cmp',
                             'conform.nvim',
                             'telescope.nvim',
                             'nvim-treesitter',
@@ -191,10 +189,9 @@ return {
                             'arena.nvim',
                             'mason-tool-installer.nvim',
                             'mason-nvim-dap.nvim',
-                            'colorful-menu.nvim',
                         }
                         for _, name in ipairs(plugin_dirs) do
-                            local dir = vim.fn.stdpath 'data' .. '/lazy/' .. name .. '/lua'
+                            local dir = vim.fn.stdpath 'data' .. '/site/pack/core/opt/' .. name .. '/lua'
                             if vim.fn.isdirectory(dir) == 1 then table.insert(library, dir) end
                         end
                     end
