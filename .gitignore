@@ -8,3 +8,6 @@ spell/
 # Track lazy-lock.json in git for reproducible plugin versions (use :Lazy restore on new machines)
 
 .DS_Store
+
+# lua-language-server workspace cache
+.cache/

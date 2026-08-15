@@ -30,6 +30,8 @@ return {
             end,
             formatters_by_ft = {
                 lua = { 'stylua' },
+                c = { 'clang-format' },
+                cpp = { 'clang-format' },
                 -- java formatting handled by JDTLS (see ftplugin/java.lua + java-formatter.xml)
                 -- python = { "isort", "black" },
                 -- javascript = { "prettierd", "prettier", stop_after_first = true },

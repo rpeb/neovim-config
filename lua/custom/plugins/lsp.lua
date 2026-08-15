@@ -100,6 +100,7 @@ return {
                         '--header-insertion=iwyu',
                         '--completion-style=detailed',
                         '--function-arg-placeholders',
+                        '--pch-storage=memory',
                         '--fallback-style=LLVM',
                     },
                     init_options = {
@@ -138,6 +139,7 @@ return {
             require('mason-tool-installer').setup {
                 ensure_installed = {
                     'lua-language-server',
+                    'clang-format',
                     'google-java-format',
                     'jdtls',
                     'java-debug-adapter',
@@ -161,6 +163,46 @@ return {
                         end
                     end
 
+                    -- Base library: LÖVE types (for LÖVE game projects)
+                    local library = { vim.fn.expand '~/.local/share/love2d-types' }
+                    -- In the Neovim config workspace, also expose Neovim core API types plus
+                    -- types for the plugins this config actually uses. Indexing *every*
+                    -- runtime file would scan ~3500 files and slow lua_ls down; this
+                    -- curated set covers the plugins referenced in lua/custom (~1500 files).
+                    -- Add new plugins here if you want their types in config files.
+                    if client.workspace_folders and client.workspace_folders[1].name == vim.fn.stdpath 'config' then
+                        table.insert(library, vim.env.VIMRUNTIME .. '/lua')
+                        local plugin_dirs = {
+                            'lazy.nvim',
+                            'blink.cmp',
+                            'conform.nvim',
+                            'telescope.nvim',
+                            'nvim-treesitter',
+                            'neotest',
+                            'obsidian.nvim',
+                            'overseer.nvim',
+                            'themery.nvim',
+                            'nvim-dap',
+                            'nvim-dap-ui',
+                            'neogen',
+                            'flash.nvim',
+                            'vim-illuminate',
+                            'cppman.nvim',
+                            'treesj',
+                            'LuaSnip',
+                            'catppuccin',
+                            'mini.nvim',
+                            'arena.nvim',
+                            'mason-tool-installer.nvim',
+                            'mason-nvim-dap.nvim',
+                            'colorful-menu.nvim',
+                        }
+                        for _, name in ipairs(plugin_dirs) do
+                            local dir = vim.fn.stdpath 'data' .. '/lazy/' .. name .. '/lua'
+                            if vim.fn.isdirectory(dir) == 1 then table.insert(library, dir) end
+                        end
+                    end
+
                     client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
                         runtime = {
                             -- Tell the language server which version of Lua you're using (most
@@ -170,10 +212,9 @@ return {
                             -- (see `:h lua-module-load`)
                             path = { 'lua/?.lua', 'lua/?/init.lua' },
                         },
-                        -- Make the server aware of Neovim runtime files + Love2D types
                         workspace = {
                             checkThirdParty = false,
-                            library = vim.list_extend(vim.api.nvim_get_runtime_file('', true), { vim.fn.expand '~/.local/share/love2d-types' }),
+                            library = library,
                         },
                     })
                 end,
