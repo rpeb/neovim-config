@@ -228,19 +228,18 @@ end
 -- Insert-mode completion keys (native autocomplete). Set here, after plugin
 -- configs, so they take precedence over tabout.nvim's own <Tab>/<S-Tab> maps.
 -- <Tab>/<S-Tab> move through the completion menu; LuaSnip expands/jumps
--- snippets; otherwise tabout jumps out of closing brackets (preserving its
--- feature) and the key falls through to a literal tab.
+-- snippets; otherwise jump out of brackets and fall through to a literal tab.
+--
+-- Bracket tabbing is handled directly (cursor right before a closing bracket
+-- -> move past it) rather than via tabout.nvim's tree-sitter lookup: Neovim
+-- 0.12's changed TSNode API (node:end_() returns extra values, node text can
+-- come up empty mid-parse) makes that lookup unreliable for some grammars
+-- (e.g. Lua `parameters` nodes), and when tabout finds no target it silently
+-- queues a literal <Tab> -- which reads as "tabout not working". tabout.nvim
+-- is still called for the multi-line / nested case, where its treesitter
+-- logic is what finds the matching closing bracket.
 local closing = { [')'] = true, [']'] = true, ['}'] = true, ['>'] = true, ["'"] = true, ['"'] = true, ['`'] = true }
 local opening = { ['('] = true, ['['] = true, ['{'] = true, ['<'] = true, ["'"] = true, ['"'] = true, ['`'] = true }
-
-local function tabout_available(dir)
-    local ok, tabout = pcall(require, 'tabout')
-    if not ok or not tabout.is_enabled() then return false end
-    local line = vim.fn.getline '.'
-    local col = vim.fn.col '.' - 1 -- 0-based column
-    if dir == 'backward' then return opening[line:sub(col, col)] == true end
-    return closing[line:sub(col + 1, col + 1)] == true
-end
 
 vim.keymap.set('i', '<Tab>', function()
     if vim.fn.pumvisible() == 1 then return '<C-n>' end
@@ -249,9 +248,20 @@ vim.keymap.set('i', '<Tab>', function()
         luasnip.expand_or_jump()
         return ''
     end
-    if tabout_available 'forward' then
-        require('tabout').tabout()
+    -- Cursor right before a closing bracket: jump past it.
+    local line = vim.fn.getline '.'
+    local col = vim.fn.col '.' - 1 -- 0-based column
+    if closing[line:sub(col + 1, col + 1)] then
+        vim.api.nvim_win_set_cursor(0, { vim.fn.line '.', col + 1 })
         return ''
+    end
+    -- Multi-line / nested brackets: let tabout find the matching close.
+    local ok2, tabout = pcall(require, 'tabout')
+    if ok2 and tabout.is_enabled() then
+        local r1, c1 = unpack(vim.api.nvim_win_get_cursor(0))
+        tabout.tabout()
+        local r2, c2 = unpack(vim.api.nvim_win_get_cursor(0))
+        if r2 ~= r1 or c2 ~= c1 then return '' end
     end
     return '<Tab>'
 end, { expr = true })
@@ -263,9 +273,19 @@ vim.keymap.set('i', '<S-Tab>', function()
         luasnip.jump(-1)
         return ''
     end
-    if tabout_available 'backward' then
-        require('tabout').taboutBack()
+    -- Cursor right after an opening bracket: jump back before it.
+    local line = vim.fn.getline '.'
+    local col = vim.fn.col '.' - 1
+    if opening[line:sub(col, col)] then
+        vim.api.nvim_win_set_cursor(0, { vim.fn.line '.', math.max(col - 1, 0) })
         return ''
+    end
+    local ok2, tabout = pcall(require, 'tabout')
+    if ok2 and tabout.is_enabled() then
+        local r1, c1 = unpack(vim.api.nvim_win_get_cursor(0))
+        tabout.taboutBack()
+        local r2, c2 = unpack(vim.api.nvim_win_get_cursor(0))
+        if r2 ~= r1 or c2 ~= c1 then return '' end
     end
     return '<S-Tab>'
 end, { expr = true })
