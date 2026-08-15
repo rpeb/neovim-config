@@ -193,18 +193,33 @@ for _, entry in ipairs(ordered) do
     end)
 end
 
--- Register `keys` from every spec. lazy-only fields (ft, cond, ...) are
--- dropped; entries without a rhs (plugins that map their own keys) are skipped.
+-- Register `keys` from every spec, matching lazy.nvim semantics:
+-- - `ft` keys become buffer-local maps created when a buffer of that
+--   filetype opens (lazy never made them global).
+-- - Keys are noremap by default unless the spec sets `noremap = false`.
+-- Entries without a rhs (plugins that map their own keys) are skipped.
 for _, entry in pairs(merged) do
     safe(entry.name, function()
         for _, key in ipairs(entry.keys or {}) do
             local rhs = key[2]
             if rhs ~= nil then
                 local km_opts = {}
-                for _, k in ipairs { 'desc', 'buffer', 'silent', 'nowait', 'expr', 'script', 'noremap', 'remap', 'replace_keycodes', 'callback' } do
+                for _, k in ipairs { 'desc', 'buffer', 'silent', 'nowait', 'expr', 'script', 'remap', 'replace_keycodes', 'callback' } do
                     if key[k] ~= nil then km_opts[k] = key[k] end
                 end
-                vim.keymap.set(key.mode or 'n', key[1], rhs, km_opts)
+                if key.noremap == false then
+                    km_opts.remap = true
+                else
+                    km_opts.noremap = true
+                end
+                if key.ft then
+                    vim.api.nvim_create_autocmd('FileType', {
+                        pattern = key.ft,
+                        callback = function() vim.keymap.set(key.mode or 'n', key[1], rhs, vim.tbl_extend('force', km_opts, { buffer = 0 })) end,
+                    })
+                else
+                    vim.keymap.set(key.mode or 'n', key[1], rhs, km_opts)
+                end
             end
         end
     end)
