@@ -284,8 +284,9 @@ end
 local closing = { [')'] = true, [']'] = true, ['}'] = true, ['>'] = true, ["'"] = true, ['"'] = true, ['`'] = true }
 local opening = { ['('] = true, ['['] = true, ['{'] = true, ['<'] = true, ["'"] = true, ['"'] = true, ['`'] = true }
 
-vim.keymap.set('i', '<Tab>', function()
-    if vim.fn.pumvisible() == 1 then return '<C-n>' end
+-- Non-popup Tab behavior: expand/jump snippets, jump out of brackets, else a
+-- literal tab. Shared by <Tab> and the empty-popup fallthrough below.
+local function tab_fallback()
     local ok, luasnip = pcall(require, 'luasnip')
     if ok and luasnip.expand_or_jumpable() then
         luasnip.expand_or_jump()
@@ -307,10 +308,10 @@ vim.keymap.set('i', '<Tab>', function()
         if r2 ~= r1 or c2 ~= c1 then return '' end
     end
     return '<Tab>'
-end, { expr = true })
+end
 
-vim.keymap.set('i', '<S-Tab>', function()
-    if vim.fn.pumvisible() == 1 then return '<C-p>' end
+-- Backward counterpart of tab_fallback().
+local function s_tab_fallback()
     local ok, luasnip = pcall(require, 'luasnip')
     if ok and luasnip.jumpable(-1) then
         luasnip.jump(-1)
@@ -331,6 +332,29 @@ vim.keymap.set('i', '<S-Tab>', function()
         if r2 ~= r1 or c2 ~= c1 then return '' end
     end
     return '<S-Tab>'
+end
+
+vim.keymap.set('i', '<Tab>', function()
+    if vim.fn.pumvisible() == 1 then
+        -- The completion menu is only worth navigating if it has items. The
+        -- LSP popup opens optimistically while typing, so it can be visible
+        -- but empty (results still in flight, or the server returned none) --
+        -- and <C-n> on an empty menu does nothing, silently eating the key
+        -- ("Tab does nothing"). Close the empty menu and fall through.
+        local info = vim.fn.complete_info { 'items' }
+        if info.items and #info.items > 0 then return '<C-n>' end
+        return '<C-e>' .. tab_fallback()
+    end
+    return tab_fallback()
+end, { expr = true })
+
+vim.keymap.set('i', '<S-Tab>', function()
+    if vim.fn.pumvisible() == 1 then
+        local info = vim.fn.complete_info { 'items' }
+        if info.items and #info.items > 0 then return '<C-p>' end
+        return '<C-e>' .. s_tab_fallback()
+    end
+    return s_tab_fallback()
 end, { expr = true })
 
 vim.keymap.set('i', '<CR>', function()
