@@ -134,7 +134,7 @@ for name, entry in pairs(merged) do
         version = entry.version and to_pack_version(entry.version),
     }
 end
-vim.pack.add(pack_specs, { confirm = false })
+vim.pack.add(pack_specs, { confirm = false, load = true })
 
 -- Config/init errors are non-fatal (like lazy.nvim, which reports them and
 -- continues): a single broken plugin must not brick startup. Errors are
@@ -151,6 +151,19 @@ end
 -- Run `init` hooks (they set globals/options before config).
 for _, entry in pairs(merged) do
     if entry.init then safe(entry.name, entry.init) end
+end
+
+-- Resolve the Lua module to configure a plugin. lazy.nvim defaults to the
+-- plugin name (with '.nvim' stripped); some plugins (e.g. better-escape.nvim)
+-- use an underscore in their module name, so fall back to that variant.
+local function resolve_main(entry)
+    local main = entry.main or entry.name:gsub('%.nvim$', '')
+    local ok, mod = pcall(require, main)
+    if ok then return mod end
+    main = main:gsub('%-', '_')
+    ok, mod = pcall(require, main)
+    if ok then return mod end
+    return nil
 end
 
 -- Run configs (explicit config, or default `require(main).setup(opts)` for
@@ -171,14 +184,11 @@ for _, entry in ipairs(ordered) do
     safe(entry.name, function()
         if type(entry.config) == 'function' then
             entry.config(entry, opts)
-        elseif entry.config == true then
-            require(entry.main or entry.name:gsub('%.nvim$', '')).setup(opts or {})
-        elseif opts ~= nil then
+        elseif entry.config == true or opts ~= nil then
             -- Default lazy behavior: require(<main>).setup(opts). Skip silently
             -- if the plugin has no matching Lua module (e.g. LuaSnip's is `luasnip`).
-            local main = entry.main or entry.name:gsub('%.nvim$', '')
-            local ok, mod = pcall(require, main)
-            if ok and type(mod.setup) == 'function' then mod.setup(opts) end
+            local mod = resolve_main(entry)
+            if mod and type(mod.setup) == 'function' then mod.setup(opts or {}) end
         end
     end)
 end
