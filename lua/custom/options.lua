@@ -20,6 +20,13 @@ vim.o.breakindent = true
 -- Save undo history
 vim.o.undofile = true
 
+-- Swap files: keep recovery swapfiles out of the working directory.
+-- The trailing '//' embeds the full path in the filename so files with
+-- the same name in different directories don't collide.
+vim.o.swapfile = true
+vim.fn.mkdir(vim.fn.stdpath 'state' .. '/swap', 'p')
+vim.opt.directory = vim.fn.stdpath 'state' .. '/swap//'
+
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.o.ignorecase = true
 vim.o.smartcase = true

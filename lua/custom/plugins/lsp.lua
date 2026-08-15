@@ -156,14 +156,10 @@ return {
             -- Lua config, as recommended by neovim help docs
             vim.lsp.config('lua_ls', {
                 on_init = function(client)
-                    if client.workspace_folders then
-                        local path = client.workspace_folders[1].name
-                        if path ~= vim.fn.stdpath 'config' and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc')) then
-                            return
-                        end
-                    end
-
-                    -- Base library: LÖVE types (for LÖVE game projects)
+                    -- Base library: LÖVE types (for LÖVE game projects).
+                    -- Applied even when the project has its own .luarc.json: lua_ls
+                    -- merges config sources, and the project file still overrides any
+                    -- key it sets explicitly (e.g. its own workspace.library).
                     local library = { vim.fn.expand '~/.local/share/love2d-types' }
                     -- In the Neovim config workspace, also expose Neovim core API types plus
                     -- types for the plugins this config actually uses. Indexing *every*
