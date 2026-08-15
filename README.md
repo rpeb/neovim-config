@@ -11,6 +11,7 @@
 - [File Navigation (Yazi)](#file-navigation-yazi)
 - [Telescope](#telescope)
 - [LSP](#lsp)
+- [Formatting (Conform)](#formatting-conform)
 - [C/C++ Build (CMake)](#cc-build-cmake)
 - [Java](#java)
 - [Debug (DAP)](#debug-dap)
@@ -23,10 +24,10 @@
 - [Surround (nvim-surround)](#surround-nvim-surround)
 - [Search / Replace](#search--replace)
 - [Obsidian](#obsidian)
-- [Java](#java)
 - [HTTP Client (Kulala)](#http-client-kulala)
 - [Overseer (Task Runner)](#overseer-task-runner)
 - [Other Plugins](#other-plugins)
+- [Themes (Themery)](#themes-themery)
 - [Terminal](#terminal)
 - [Tmux (vim-tpipeline)](#tmux-vim-tpipeline)
 - [Vim Defaults](#vim-defaults)
@@ -219,6 +220,17 @@ These are built-in vim motions and text objects — no plugins needed. Learn the
 | `gW` | Normal | Workspace symbols |
 | `<C-h>` | Insert | LSP signature help |
 
+## Formatting (Conform)
+
+| Key | Mode | Action |
+|-----|------|--------|
+| `<leader>f` | Normal | Format buffer |
+
+Format-on-save is enabled. Respects project config files where present:
+
+- **C/C++**: clang-format (uses the project's `.clang-format`; skipped if none exists)
+- **Lua**: stylua (uses the project's `.stylua.toml`)
+
 ## Git (Gitsigns)
 
 | Key | Mode | Action |
@@ -384,7 +396,6 @@ These are built-in vim motions and text objects — no plugins needed. Learn the
 | Key | Mode | Action |
 |-----|------|--------|
 | `<leader>Z` | Normal | Open Zoxide |
-| `<leader>tc` | Normal | Theme chooser (Themery) |
 | `<leader>ut` | Normal | Toggle transparency |
 | `<leader>tz` | Normal | Toggle Zen mode |
 | `<leader>bd` | Normal | Open buffer dashboard |
@@ -397,6 +408,38 @@ These are built-in vim motions and text objects — no plugins needed. Learn the
 | `<leader>i` | Normal | Import picker |
 | `<leader>nd` | Normal | Dismiss Noice message |
 | `<leader>vpp` | Normal | Open init.lua |
+
+## Themes (Themery)
+
+| Key | Mode | Action |
+|-----|------|--------|
+| `<leader>tc` | Normal | Open theme picker (Themery) |
+
+The selected theme persists across sessions (saved to
+`~/.local/share/nvim/themery/state.json`). Press `<cr>` to apply and save,
+`q` / `<Esc>` to cancel, and use `j`/`k` (or arrows) to preview with
+livePreview.
+
+Available themes (variants selectable in the picker):
+
+- **Catppuccin** (default)
+- **Nord**
+- **Kanagawa** (dragon, wave, lotus)
+- **Material** (darker, lighter, oceanic, palenight)
+- **Everforest** (dark, light)
+- **One Dark Pro** (onedark, onedark_dark, onedark_vivid, onelight)
+- **GitHub** (dark, light, dark_dimmed, light_default)
+- **Bamboo**
+- **Gruvbox**
+- **Monokai** (pro, soda, ristretto)
+- **Tokyo Night** (night, storm, moon, day)
+- **Rosé Pine** (default, moon, dawn)
+- **Nightfox** (nightfox, dayfox, dawnfox, duskfox, nordfox, terafox, carbonfox)
+- **Dracula**
+- **Gruvbox Material** (hard, medium, soft)
+- **Sonokai** (default, atlantis, andromeda, shusia, maia, espresso)
+- **Oxocarbon**
+- **Solarized 8** (default, flat, high, low, light)
 
 ## Terminal
 
