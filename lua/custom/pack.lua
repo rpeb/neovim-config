@@ -162,7 +162,22 @@ for _, name in ipairs(load_order) do
         version = entry.version and to_pack_version(entry.version),
     }
 end
-vim.pack.add(pack_specs, { confirm = false, load = true })
+-- Load each plugin ourselves (in dependency order) instead of letting
+-- vim.pack do it: its built-in loading raises -- aborting startup -- if any
+-- plugin's plugin/ file errors. That's how a bad load order (cmake-tools
+-- before its plenary dependency) could brick Neovim. packadd per plugin,
+-- tolerating individual failures so one broken plugin file can never take
+-- down the whole editor; errors are recorded for diagnostics.
+vim.pack.add(pack_specs, {
+    confirm = false,
+    load = function(plug)
+        local ok, err = pcall(vim.cmd.packadd, plug.spec.name)
+        if not ok then
+            vim.g._pack_config_errors = vim.g._pack_config_errors or {}
+            vim.g._pack_config_errors['load:' .. plug.spec.name] = err
+        end
+    end,
+})
 
 -- Config/init errors are non-fatal (like lazy.nvim, which reports them and
 -- continues): a single broken plugin must not brick startup. Errors are
