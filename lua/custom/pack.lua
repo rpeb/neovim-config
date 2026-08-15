@@ -69,9 +69,17 @@ local function collect(spec)
         entry.keys = entry.keys or {}
         vim.list_extend(entry.keys, spec.keys)
     end
-    -- Recurse into dependencies.
+    -- Recurse into dependencies and track them for load ordering: vim.pack
+    -- sources plugin/ files in list order and has no dependency handling, so a
+    -- plugin whose plugin file requires a dependency at load time (e.g.
+    -- cmake-tools.nvim -> plenary.path) must be added after that dependency.
     for _, dep in ipairs(spec.dependencies or {}) do
         collect(dep)
+        local dep_name = plugin_name(dep)
+        if merged[dep_name] and not vim.tbl_contains(entry.deps or {}, dep_name) then
+            entry.deps = entry.deps or {}
+            entry.deps[#entry.deps + 1] = dep_name
+        end
     end
 end
 
@@ -124,10 +132,30 @@ vim.api.nvim_create_autocmd('VimEnter', {
     end,
 })
 
+-- Order plugins so dependencies are added (and their plugin/ files sourced)
+-- before dependents. The previous pairs() iteration order was random, which
+-- intermittently broke startup when e.g. cmake-tools.nvim's plugin file ran
+-- before plenary.nvim was on the runtimepath.
+local load_order = {}
+local visited = {}
+local function visit(name)
+    if visited[name] then return end
+    visited[name] = true
+    local entry = merged[name]
+    for _, dep in ipairs(entry.deps or {}) do
+        if merged[dep] then visit(dep) end
+    end
+    load_order[#load_order + 1] = name
+end
+for name in pairs(merged) do
+    visit(name)
+end
+
 -- Install / register every plugin. `confirm = false` matches the old
 -- `install.missing = true` behavior (install silently, no prompt).
 local pack_specs = {}
-for name, entry in pairs(merged) do
+for _, name in ipairs(load_order) do
+    local entry = merged[name]
     pack_specs[#pack_specs + 1] = {
         src = entry.src,
         name = name,
